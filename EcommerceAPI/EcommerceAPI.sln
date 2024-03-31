@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceAPI", "EcommerceAPI.csproj", "{EBB1B6A4-86F7-43F8-B4A2-B2A1E19701E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceAPI", "EcommerceAPI.csproj", "{EBB1B6A4-86F7-43F8-B4A2-B2A1E19701E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceAPI.Entity", "..\EcommerceAPI.Entity\EcommerceAPI.Entity.csproj", "{D0651E3E-58DF-46EA-8A90-1F67B27E23F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceAPI.Entity", "..\EcommerceAPI.Entity\EcommerceAPI.Entity.csproj", "{D0651E3E-58DF-46EA-8A90-1F67B27E23F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceAPI.Service", "..\EcommerceAPI.Service\EcommerceAPI.Service.csproj", "{3C6EBEDB-03DC-4B8E-B5B9-2DEA9247AE55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceAPI.Service", "..\EcommerceAPI.Service\EcommerceAPI.Service.csproj", "{3C6EBEDB-03DC-4B8E-B5B9-2DEA9247AE55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceAPI.Repository", "..\EcommerceAPI.Repository\EcommerceAPI.Repository.csproj", "{D971CAB9-5243-4A6A-9E64-CB64F0A23AF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceAPI.Repository", "..\EcommerceAPI.Repository\EcommerceAPI.Repository.csproj", "{D971CAB9-5243-4A6A-9E64-CB64F0A23AF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceAPI.Utils", "..\EcommerceAPI.Utils\EcommerceAPI.Utils.csproj", "{1C44101D-8959-493C-8174-82885A4000D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceAPI.Utils", "..\EcommerceAPI.Utils\EcommerceAPI.Utils.csproj", "{1C44101D-8959-493C-8174-82885A4000D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceAPI.Interface", "..\EcommerceAPI.Interface\EcommerceAPI.Interface.csproj", "{B1AED71C-9E12-4147-B903-551B7684C6EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceAPI.Interface", "..\EcommerceAPI.Interface\EcommerceAPI.Interface.csproj", "{B1AED71C-9E12-4147-B903-551B7684C6EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceAPI.Presentation", "..\EcommerceAPI.Presentation\EcommerceAPI.Presentation.csproj", "{D2218B06-C763-4599-A4D8-1770DE12D3E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{B1AED71C-9E12-4147-B903-551B7684C6EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1AED71C-9E12-4147-B903-551B7684C6EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1AED71C-9E12-4147-B903-551B7684C6EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2218B06-C763-4599-A4D8-1770DE12D3E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2218B06-C763-4599-A4D8-1770DE12D3E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2218B06-C763-4599-A4D8-1770DE12D3E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2218B06-C763-4599-A4D8-1770DE12D3E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
