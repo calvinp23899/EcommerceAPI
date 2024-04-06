@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EcommerceAPI.Entity.Models
 {
-    public class BaseEntity 
+    public abstract class BaseEntity 
     {
         public int Id { get; set; }
         public string CreatedBy { get; set; }
