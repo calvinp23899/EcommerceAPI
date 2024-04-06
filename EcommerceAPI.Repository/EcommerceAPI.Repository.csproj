@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EcommerceAPI.Entity\EcommerceAPI.Entity.csproj" />
+    <ProjectReference Include="..\EcommerceAPI.Interface\EcommerceAPI.Interface.csproj" />
     <ProjectReference Include="..\EcommerceAPI.Utils\EcommerceAPI.Utils.csproj" />
   </ItemGroup>
 
