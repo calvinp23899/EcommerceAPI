@@ -115,7 +115,7 @@ namespace EcommerceAPI.Repository.Configuration
                     CreatedOn = DateTime.Now,
                     UpdatedBy = "System",
                     UpdatedOn = DateTime.Now,
-                    Role = Entity.Enums.Role.SUPER_ADMIN,
+                    Role = Entity.Enums.Role.USER,
                     IsActive = true,
                     IsDeleted = false,
                 }

@@ -10,6 +10,6 @@ namespace EcommerceAPI.Interface.IRepository
     public interface IRepositoryManager
     {
         IUserRepository User { get; }
-        void Save();
+        Task SaveAsync();
     }
 }
