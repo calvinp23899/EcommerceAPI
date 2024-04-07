@@ -15,7 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceAPI.Utils", "..\Ec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceAPI.Interface", "..\EcommerceAPI.Interface\EcommerceAPI.Interface.csproj", "{B1AED71C-9E12-4147-B903-551B7684C6EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceAPI.Presentation", "..\EcommerceAPI.Presentation\EcommerceAPI.Presentation.csproj", "{D2218B06-C763-4599-A4D8-1770DE12D3E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceAPI.Presentation", "..\EcommerceAPI.Presentation\EcommerceAPI.Presentation.csproj", "{D2218B06-C763-4599-A4D8-1770DE12D3E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5066400B-DE09-4A20-AF45-6C00C4C43106}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -20,7 +20,7 @@ namespace EcommerceAPI.Repository.ManagerRepository
             UserRepository(repositoryContext));
         }
         public IUserRepository User => _userRepository.Value;
-        public void Save() => _repositoryContext.SaveChanges();
+        public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
 
     }
 }

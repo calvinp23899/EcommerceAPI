@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EcommerceAPI.Service.EntityService;
+using AutoMapper;
 
 namespace EcommerceAPI.Service.ManagementService
 {
@@ -15,9 +16,9 @@ namespace EcommerceAPI.Service.ManagementService
     {
         private readonly Lazy<IUserService> _userService;
 
-        public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger)
+        public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper)
         {
-            _userService = new Lazy<IUserService>(() => new UserService(repositoryManager, logger));
+            _userService = new Lazy<IUserService>(() => new UserService(repositoryManager, logger, mapper));
 
         }
         public IUserService UserService => _userService.Value;

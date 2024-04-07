@@ -1,4 +1,5 @@
-﻿using EcommerceAPI.Interface.IService;
+﻿using EcommerceAPI.Entity.DTOs;
+using EcommerceAPI.Interface.IService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceAPI.Presentation.Controllers
@@ -16,16 +17,38 @@ namespace EcommerceAPI.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            try
-            {
-                var result = await _service.UserService.GetAllUsers(trackChanges: false);
-                return Ok(result);
-            }
-            catch
-            {
-                return StatusCode(500, "Internal server error");
-            }
+            var result = await _service.UserService.GetAllUsersAsync(trackChanges: false);
+            return Ok(result);
         }
 
+        [HttpGet("get-id-user/{id}", Name = "UserById")]
+        public async Task<IActionResult> GetUserId(int id)
+        {
+            var result = await _service.UserService.GetUserAsync(id, trackChanges: false);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] UserCreationDto request)
+        {
+            if (request is null)
+                return BadRequest("request is null");
+            var result = await _service.UserService.CreateUserAsync(request);
+            return CreatedAtRoute("UserById", new { id = result.Id }, result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int Id, [FromBody] UserUpdateDto request)
+        {
+            await _service.UserService.UpdateUserAsync(Id, request, true);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int Id, [FromBody] UserDeleteDto request)
+        {
+            await _service.UserService.DeleteUserAsync(Id, request, true);
+            return NoContent();
+        }
     }
 }

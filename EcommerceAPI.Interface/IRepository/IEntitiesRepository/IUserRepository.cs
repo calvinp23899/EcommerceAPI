@@ -9,6 +9,9 @@ namespace EcommerceAPI.Interface.IRepository.IEntitiesRepository
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetAllUsers(bool trackChanges);
+        Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges);
+        Task<User> GetUserAsync(int Id, bool trackChanges);
+        void CreateUser(User user);
+        void DeleteUser(User user);
     }
 }

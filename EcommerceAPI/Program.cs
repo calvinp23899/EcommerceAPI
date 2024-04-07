@@ -1,3 +1,5 @@
+using EcommerceAPI.Extensions;
+using EcommerceAPI.Interface;
 using EcommerceAPI.ServicesExtension;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
@@ -12,23 +14,22 @@ builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(EcommerceAPI.Presentation.AssemblyReference).Assembly); 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
 
+
+app.UseSwagger();
+app.UseSwaggerUI();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-    //{
-    //    app.UseSwagger();
-    //    app.UseSwaggerUI();
-    //}
-    app.UseDeveloperExceptionPage();
-else
+if (app.Environment.IsProduction())
     app.UseHsts();
 
 app.UseHttpsRedirection();
