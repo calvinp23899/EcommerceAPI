@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace EcommerceAPI.Entity.Exceptions
 {
-    public sealed class UserNotFoundException : NotFoundException
+    public sealed class DataNotFoundException : NotFoundException
     {
-        public UserNotFoundException(int id) : base($"The user with id: {id} doesn't exist in the database.")
+        public DataNotFoundException(string message) : base(message)
         {
         }
     }

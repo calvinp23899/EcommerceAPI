@@ -6,8 +6,5 @@ using System.Threading.Tasks;
 
 namespace EcommerceAPI.Entity.DTOs
 {
-    public class AuthenticationResponse
-    {
-
-    }
+    public record TokenDto(string AccessToken, string RefreshToken);
 }

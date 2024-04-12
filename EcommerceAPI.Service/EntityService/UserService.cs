@@ -6,6 +6,7 @@ using AutoMapper;
 using EcommerceAPI.Entity.DTOs;
 using EcommerceAPI.Entity.Exceptions;
 using System.ComponentModel.Design;
+using static EcommerceAPI.Entity.AppConstants.AppConstant;
 
 
 namespace EcommerceAPI.Service.EntityService
@@ -33,7 +34,7 @@ namespace EcommerceAPI.Service.EntityService
         {
             var user = await _repository.User.GetUserAsync(Id, trackChanges);
             if (user is null)
-                throw new UserNotFoundException(Id);
+                throw new DataNotFoundException(string.Format(Error.DS001,Id));
             var result = _mapper.Map<UserDto>(user);
             return result;
         }
@@ -64,7 +65,7 @@ namespace EcommerceAPI.Service.EntityService
         {
             var user = await _repository.User.GetUserAsync(Id, trackChanges);
             if (user is null)
-                throw new UserNotFoundException(Id);
+                throw new DataNotFoundException(string.Format(Error.DS001, Id));
             return user;
         }
 
@@ -72,7 +73,7 @@ namespace EcommerceAPI.Service.EntityService
         {
             var user = await _repository.User.GetUserAsync(Id, trackChanges);
             if (user is null)
-                throw new UserNotFoundException(Id);
+                throw new DataNotFoundException(string.Format(Error.DS001, Id));
         }
     }
 }

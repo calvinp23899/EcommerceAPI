@@ -2,7 +2,7 @@
 
 namespace EcommerceAPI.Utils.Common
 {
-    public class HashPassword
+    public static class HashPassword
     {
 
         public static string Encrypt(string password)

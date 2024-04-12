@@ -40,5 +40,9 @@ namespace EcommerceAPI.Repository.EntityRepository
         }
         public void DeleteUser(User user) => Delete(user);
 
+        public async Task<User> FindUserNameAsync(string userName, bool trackChanges)
+        {
+            return await FindByCondition(c => c.Username.Equals(userName), trackChanges).SingleOrDefaultAsync();
+        }
     }
 }
