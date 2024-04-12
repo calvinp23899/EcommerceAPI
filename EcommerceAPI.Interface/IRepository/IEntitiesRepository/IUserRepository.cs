@@ -11,6 +11,7 @@ namespace EcommerceAPI.Interface.IRepository.IEntitiesRepository
     {
         Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges);
         Task<User> GetUserAsync(int Id, bool trackChanges);
+        Task<User> FindUserNameAsync(string userName, bool trackChanges);
         void CreateUser(User user);
         void DeleteUser(User user);
     }

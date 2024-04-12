@@ -19,6 +19,7 @@ namespace EcommerceAPI.MappingProfile
             CreateMap<UserUpdateDto, User>();
             //Delete
             CreateMap<UserDeleteDto, User>();
+            CreateMap<User, AuthenticationResponseDto>();
 
         }
     }

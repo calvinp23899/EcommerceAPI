@@ -2,7 +2,7 @@
 using EcommerceAPI.Interface.IService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EcommerceAPI.Presentation.Controllers
+namespace EcommerceAPI.Presentation.Controllers.v1
 {
     [Route("api/users")]
     [ApiController]

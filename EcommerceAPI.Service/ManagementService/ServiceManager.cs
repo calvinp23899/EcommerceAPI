@@ -9,18 +9,26 @@ using System.Text;
 using System.Threading.Tasks;
 using EcommerceAPI.Service.EntityService;
 using AutoMapper;
+using EcommerceAPI.Service.AuthService;
+using Microsoft.Extensions.Configuration;
+using EcommerceAPI.Entity.JwtModel;
+using Microsoft.Extensions.Options;
 
 namespace EcommerceAPI.Service.ManagementService
 {
     public class ServiceManager : IServiceManager
     {
         private readonly Lazy<IUserService> _userService;
+        private readonly Lazy<IAuthenticationService> _authenticationService;
 
-        public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper)
+        public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper, IConfiguration configuration)
         {
             _userService = new Lazy<IUserService>(() => new UserService(repositoryManager, logger, mapper));
+            _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(repositoryManager, logger, mapper, configuration));
 
         }
         public IUserService UserService => _userService.Value;
+        public IAuthenticationService AuthenticationService => _authenticationService.Value;
+
     }
 }

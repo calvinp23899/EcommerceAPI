@@ -15,6 +15,8 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.ConfigureJWT(builder.Configuration);
+
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(EcommerceAPI.Presentation.AssemblyReference).Assembly); 
@@ -40,7 +42,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 app.UseCors("CorsPolicy");
 
-//app.UseAuthentication();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
