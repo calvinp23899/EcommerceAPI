@@ -9,7 +9,7 @@ namespace EcommerceAPI.Interface.IService.IEntityService
 {
     public interface IAuthenticationService
     {
-        Task<TokenDto> CreateToken(AuthenticationRequestDto userDto);
+        Task<TokenDto> CreateToken(AuthenticationRequestDto userDto, bool isCheckRefresh);
         Task<TokenDto> RefreshToken(TokenDto tokenDto);
     }
 }

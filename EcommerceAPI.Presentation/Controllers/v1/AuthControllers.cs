@@ -1,11 +1,7 @@
 ﻿using EcommerceAPI.Entity.DTOs;
 using EcommerceAPI.Interface.IService;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace EcommerceAPI.Presentation.Controllers.v1
 {
@@ -21,10 +17,17 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequestDto request)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequestDto request, bool isCheckRefresh = false)
         {
-            var tokenDto = await _service.AuthenticationService.CreateToken(request);
+            var tokenDto = await _service.AuthenticationService.CreateToken(request, isCheckRefresh);
             return Ok(tokenDto);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> Refresh([FromBody] TokenDto tokenDto)
+        {
+            var tokenDtoToReturn = await _service.AuthenticationService.RefreshToken(tokenDto);
+            return Ok(tokenDtoToReturn);
         }
     }
 }
