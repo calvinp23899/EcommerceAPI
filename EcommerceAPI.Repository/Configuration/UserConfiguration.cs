@@ -58,7 +58,7 @@ namespace EcommerceAPI.Repository.Configuration
                     .HasMaxLength(255);
             builder.Property(p => p.RefreshTokenExpiryTime)
                     .IsRequired(false)
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
             builder.Property(p => p.IsActive)
                     .IsRequired(true)
                     .HasColumnType("bit");

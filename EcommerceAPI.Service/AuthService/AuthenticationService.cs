@@ -41,14 +41,15 @@ namespace EcommerceAPI.Service.AuthService
 
         }
         public async Task<TokenDto> CreateToken(AuthenticationRequestDto userDto)
-        {
+        {           
             var user = await ValidateUser(userDto);
             var signingCredentials = GetSigningCredentials();
             var claims = GetClaimsAsync(user);
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
             var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             var refreshToken = GenerateRefreshToken();
-            return new TokenDto(AccessToken: accessToken, RefreshToken: refreshToken);
+            await UpdateRefreshTokenForUser(Convert.ToInt32(user.Id), refreshToken);
+            return new TokenDto(accessToken, refreshToken);
         }
 
         public Task<TokenDto> RefreshToken(TokenDto tokenDto)
@@ -58,7 +59,7 @@ namespace EcommerceAPI.Service.AuthService
 
         private async Task<AuthenticationResponseDto> ValidateUser(AuthenticationRequestDto userDto)
         {
-            var user = await _repository.User.FindUserNameAsync(userDto.UserName, false);
+            var user = await _repository.User.FindUserNameAsync(userDto.UserName, true);
             if(user == null)
                 throw new DataNotFoundException(string.Format(Error.DS002,userDto.UserName));
             if (!VerifyPassword.Verify(userDto.Password, user.Password))
@@ -71,7 +72,7 @@ namespace EcommerceAPI.Service.AuthService
             var claims = new List<Claim>()
             {
                 new Claim(JwtKey.UserId, user.Id),
-                new Claim(ClaimTypes.Name, string.Concat(user.FirstName," ",user.LastName) ??  string.Empty),
+                new Claim(ClaimTypes.Name, string.Concat(user.FirstName," ",user.LastName) ?? string.Empty),
                 new Claim(ClaimTypes.Role, user.Role ?? string.Empty),
             };
             return claims;
@@ -82,15 +83,14 @@ namespace EcommerceAPI.Service.AuthService
             var secret = new SymmetricSecurityKey(key);
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
-        private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims, int expiredMinutes = 0)
+        private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
         {
-            expiredMinutes = expiredMinutes == 0 ? _jwtSetting.ExpiredMinutes : expiredMinutes;
             var tokenOptions = new JwtSecurityToken
             (
                 issuer: _jwtSetting.ValidIssuer,
                 audience: _jwtSetting.ValidAudience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(expiredMinutes),
+                expires: DateTime.Now.AddMinutes(_jwtSetting.ExpiredMinutes),
                 signingCredentials: signingCredentials
             );
             return tokenOptions;
@@ -103,6 +103,16 @@ namespace EcommerceAPI.Service.AuthService
                 rng.GetBytes(randomNumber);
                 return Convert.ToBase64String(randomNumber);
             }
+        }
+
+        private async Task UpdateRefreshTokenForUser(int Id, string refreshToken)
+        {
+            var userEntity =  await _repository.User.GetUserAsync(Id, true);
+            var userRefreshToken = new UpdateRefreshTokenDto();
+            userRefreshToken.RefreshToken = refreshToken;
+            userRefreshToken.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            _mapper.Map(userRefreshToken, userEntity);
+            await _repository.SaveAsync();
         }
     }
 }
