@@ -15,10 +15,15 @@ namespace EcommerceAPI.Entity.AppConstants
 
         public class Error
         {
-            //DS001-100 For User
+            //DS001-050 For User
             public const string DS001 = "The user with id: {0} is not exist in the database.";
             public const string DS002 = "The user with username: {0} is not exist in the database.";
-            public const string DS003 = "Unable to get user due to password is invalid. Please try again.";
+            
+            //DS050-060 For Authentication
+            public const string DS050 = "Unable to get refresh token due to token is invalid. Please try again.";
+            public const string DS051 = "Unable to get refresh token due to client request has some invalid values. Please try again.";
+            public const string DS052 = "Unable to get user due to password is invalid. Please try again.";
+            public const string DS053 = "Invalid client request due to username or password. Please try again.";
         }
     }
 }
