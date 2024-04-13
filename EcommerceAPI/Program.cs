@@ -19,7 +19,11 @@ builder.Services.ConfigureJWT(builder.Configuration);
 
 
 builder.Services.AddControllers()
-    .AddApplicationPart(typeof(EcommerceAPI.Presentation.AssemblyReference).Assembly); 
+    .AddApplicationPart(typeof(EcommerceAPI.Presentation.AssemblyReference).Assembly)
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
