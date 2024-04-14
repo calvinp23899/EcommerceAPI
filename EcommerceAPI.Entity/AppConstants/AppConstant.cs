@@ -10,7 +10,7 @@ namespace EcommerceAPI.Entity.AppConstants
     {
         public class JwtKey
         {
-            public const string UserId = "userId";
+            public const string UserId = "";
         }
 
         public class Error
@@ -20,10 +20,12 @@ namespace EcommerceAPI.Entity.AppConstants
             public const string DS002 = "The user with username: {0} is not exist in the database.";
             
             //DS050-060 For Authentication
-            public const string DS050 = "Unable to get refresh token due to token is invalid. Please try again.";
+            public const string DS050 = "Unable to get refresh token due to AccessToken is invalid. Please try again.";
             public const string DS051 = "Unable to get refresh token due to client request has some invalid values. Please try again.";
             public const string DS052 = "Unable to get user due to password is invalid. Please try again.";
             public const string DS053 = "Invalid client request due to username or password. Please try again.";
+            public const string DS054 = "Token is invalid or expired";
+            public const string DS055 = "Token is invalid. Please try again.";
         }
     }
 }

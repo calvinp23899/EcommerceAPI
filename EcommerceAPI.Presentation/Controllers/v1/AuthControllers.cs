@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceAPI.Presentation.Controllers.v1
 {
-    [Route("api/login")]
+    [Route("api/authen")]
     [ApiController]
     public class AuthControllers : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace EcommerceAPI.Presentation.Controllers.v1
             _service = service;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequestDto request, bool isCheckRefresh = false)
         {
             var tokenDto = await _service.AuthenticationService.CreateToken(request, isCheckRefresh);

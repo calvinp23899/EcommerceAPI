@@ -1,10 +1,13 @@
 ﻿using EcommerceAPI.Entity.DTOs;
+using EcommerceAPI.Entity.Enums;
 using EcommerceAPI.Interface.IService;
+using EcommerceAPI.Presentation.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceAPI.Presentation.Controllers.v1
 {
     [Route("api/users")]
+    [Authorize(Role.SUPER_ADMIN)]
     [ApiController]
     public class UsersControllers : ControllerBase
     {
