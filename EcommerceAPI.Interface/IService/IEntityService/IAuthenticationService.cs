@@ -9,6 +9,7 @@ namespace EcommerceAPI.Interface.IService.IEntityService
 {
     public interface IAuthenticationService
     {
+        public AuthenticationResponseDto ValidateJwtToken(string token, bool isExpiredToken);
         Task<TokenDto> CreateToken(AuthenticationRequestDto userDto, bool isCheckRefresh);
         Task<TokenDto> RefreshToken(TokenDto tokenDto);
     }

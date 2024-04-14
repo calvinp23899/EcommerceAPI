@@ -30,7 +30,7 @@ namespace EcommerceAPI.Service.AuthService
         private readonly IConfiguration _configuration;
         private readonly JwtSetting _jwtSetting;
 
-        public AuthenticationService(IRepositoryManager repository,ILoggerManager logger, IMapper mapper, IConfiguration configuration)
+        public AuthenticationService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IConfiguration configuration)
         {
             _repository = repository;
             _logger = logger;
@@ -41,7 +41,7 @@ namespace EcommerceAPI.Service.AuthService
 
         }
         public async Task<TokenDto> CreateToken(AuthenticationRequestDto userDto, bool isCheckRefresh)
-        {           
+        {
             var user = await ValidateUser(userDto, isCheckRefresh);
             var signingCredentials = GetSigningCredentials();
             var claims = GetClaimsAsync(user);
@@ -54,9 +54,8 @@ namespace EcommerceAPI.Service.AuthService
 
         public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
         {
-            var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
-            var ClaimId = principal.Identities.SingleOrDefault().Claims.ToList()[0];
-            var userEntity = await _repository.User.GetUserAsync(Convert.ToInt32(ClaimId.Value), false);
+            var validEntity = ValidateJwtToken(tokenDto.AccessToken);
+            var userEntity = await _repository.User.GetUserAsync(Convert.ToInt32(validEntity.Id), false);
             if (userEntity == null || userEntity.RefreshToken != tokenDto.RefreshToken ||
             userEntity.RefreshTokenExpiryTime <= DateTime.Now)
                 throw new RefreshTokenBadRequestException(Error.DS051);
@@ -69,9 +68,9 @@ namespace EcommerceAPI.Service.AuthService
         }
         private async Task<AuthenticationResponseDto> ValidateUser(AuthenticationRequestDto userDto, bool isCheckRefresh)
         {
-            if( userDto.UserName.ToLower().Equals("null") == true ||
+            if (userDto.UserName.ToLower().Equals("null") == true ||
                 userDto.Password.ToLower().Equals("null") == true ||
-                string.IsNullOrWhiteSpace(userDto.UserName) || 
+                string.IsNullOrWhiteSpace(userDto.UserName) ||
                 string.IsNullOrWhiteSpace(userDto.Password)
             )
                 throw new DataValidationException(Error.DS053);
@@ -82,7 +81,7 @@ namespace EcommerceAPI.Service.AuthService
             {
                 if (!VerifyPassword.Verify(userDto.Password, user.Password))
                     throw new DataValidationException(Error.DS052);
-            }         
+            }
             var result = _mapper.Map<AuthenticationResponseDto>(user);
             return result;
         }
@@ -125,36 +124,36 @@ namespace EcommerceAPI.Service.AuthService
         }
         private async Task UpdateRefreshTokenForUser(int Id, string refreshToken)
         {
-            var userEntity =  await _repository.User.GetUserAsync(Id, true);
+            var userEntity = await _repository.User.GetUserAsync(Id, true);
             var userRefreshToken = new UpdateRefreshTokenDto();
             userRefreshToken.RefreshToken = refreshToken;
             userRefreshToken.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
             _mapper.Map(userRefreshToken, userEntity);
             await _repository.SaveAsync();
         }
-        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public AuthenticationResponseDto ValidateJwtToken(string token, bool isExpiredToken = false)
         {
+            if(string.IsNullOrWhiteSpace(token) || token == "null")
+                throw new RefreshTokenBadRequestException(Error.DS055);
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"))),
-                ValidateLifetime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"))),
+                ValidateLifetime = isExpiredToken,
                 ValidIssuer = _jwtSetting.ValidIssuer,
                 ValidAudience = _jwtSetting.ValidAudience,
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
-                StringComparison.InvariantCultureIgnoreCase))
+            tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtToken = (JwtSecurityToken)securityToken;
+            return new AuthenticationResponseDto
             {
-                throw new SecurityTokenException(Error.DS050);
-            }
-            return principal;
+                Id = int.Parse(jwtToken.Claims.ToList().FirstOrDefault().Value).ToString(),
+                Role = jwtToken.Claims.ToList()[2].Value,
+            };
         }
     }
 }
