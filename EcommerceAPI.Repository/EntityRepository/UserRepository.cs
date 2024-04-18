@@ -1,5 +1,6 @@
 ﻿using EcommerceAPI.Entity.Exceptions;
 using EcommerceAPI.Entity.Models;
+using EcommerceAPI.Entity.PaginationModels;
 using EcommerceAPI.Interface.IRepository.IEntitiesRepository;
 using EcommerceAPI.Utils.Common;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace EcommerceAPI.Repository.EntityRepository
         public UserRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
-        public async Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges)
+        public async Task<IEnumerable<User>> GetAllUsersAsync(PaginationParams request, bool trackChanges)
         {
             return await FindByCondition(c=>c.IsDeleted == false,trackChanges)
-                  .OrderBy(c => c.FirstName)
+                  .OrderByDescending(c => c.Id)
+                  .Skip((request.PageNumber - 1) * request.PageSize)
+                  .Take(request.PageSize)
                   .ToListAsync();
         }
 
@@ -43,6 +46,11 @@ namespace EcommerceAPI.Repository.EntityRepository
         public async Task<User> FindUserNameAsync(string userName, bool trackChanges)
         {
             return await FindByCondition(c => c.Username.Equals(userName), trackChanges).SingleOrDefaultAsync();
+        }
+
+        public async Task<int> CountAllUserAsync(bool trackChanges)
+        {
+            return await FindByCondition(c => c.IsDeleted == false, trackChanges).CountAsync();
         }
     }
 }

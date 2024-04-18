@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EcommerceAPI.Entity.DTOs;
+using EcommerceAPI.Entity.Enums;
 using EcommerceAPI.Entity.Exceptions;
 using EcommerceAPI.Entity.JwtModel;
 using EcommerceAPI.Entity.Models;
@@ -147,13 +148,27 @@ namespace EcommerceAPI.Service.AuthService
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
-            tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-            var jwtToken = (JwtSecurityToken)securityToken;
-            return new AuthenticationResponseDto
+            try
             {
-                Id = int.Parse(jwtToken.Claims.ToList().FirstOrDefault().Value).ToString(),
-                Role = jwtToken.Claims.ToList()[2].Value,
-            };
+                tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+                var jwtToken = (JwtSecurityToken)securityToken;
+                return new AuthenticationResponseDto
+                {
+                    Id = int.Parse(jwtToken.Claims.ToList().FirstOrDefault().Value).ToString(),
+                    Role = jwtToken.Claims.ToList()[2].Value,
+                };
+            }catch (SecurityTokenExpiredException)
+            {
+                return new AuthenticationResponseDto
+                {
+                    Id = null,
+                    Role = null
+                };
+            }
+            catch (Exception)
+            {
+                throw new RefreshTokenBadRequestException(Error.DS055);
+            }
         }
     }
 }

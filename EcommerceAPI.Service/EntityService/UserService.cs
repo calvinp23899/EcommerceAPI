@@ -7,6 +7,8 @@ using EcommerceAPI.Entity.DTOs;
 using EcommerceAPI.Entity.Exceptions;
 using System.ComponentModel.Design;
 using static EcommerceAPI.Entity.AppConstants.AppConstant;
+using EcommerceAPI.Entity.PaginationModels;
+using EcommerceAPI.Utils.Common;
 
 
 namespace EcommerceAPI.Service.EntityService
@@ -23,11 +25,14 @@ namespace EcommerceAPI.Service.EntityService
             _logger = logger;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<UserDto>> GetAllUsersAsync(bool trackChanges)
+        public async Task<(IEnumerable<UserDto>,int)> GetAllUsersAsync(PaginationParams request, bool trackChanges)
         {
-            var listUser = await _repository.User.GetAllUsersAsync(trackChanges);
+            _logger.LogInfo(Logger.MS001);
+            PagingUtils.ValidatePaging(request.PageNumber, request.PageSize);
+            var listUser = await _repository.User.GetAllUsersAsync(request, trackChanges);
+            var count = await _repository.User.CountAllUserAsync(trackChanges);
             var result = _mapper.Map<IEnumerable<UserDto>>(listUser);
-            return result;
+            return (result, count);
         }
 
         public async Task<UserDto> GetUserAsync(int Id, bool trackChanges)

@@ -5,6 +5,7 @@ using EcommerceAPI.Repository;
 using EcommerceAPI.Repository.ManagerRepository;
 using EcommerceAPI.Service.LoggerService;
 using EcommerceAPI.Service.ManagementService;
+using EcommerceAPI.Service.UriService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -68,6 +69,16 @@ namespace EcommerceAPI.ServicesExtension
                 };
             });
         }
-
+        public static void ConfigUriService(this IServiceCollection services)
+        {
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IUriService>(o =>
+            {
+                var accessor = o.GetRequiredService<IHttpContextAccessor>();
+                var request = accessor.HttpContext.Request;
+                var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+                return new UriService(uri);
+            });
+        }
     }
 }
