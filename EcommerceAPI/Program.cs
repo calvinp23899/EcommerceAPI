@@ -1,5 +1,7 @@
 using EcommerceAPI.Extensions;
 using EcommerceAPI.Interface;
+using EcommerceAPI.Interface.IService;
+using EcommerceAPI.Service.UriService;
 using EcommerceAPI.ServicesExtension;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
@@ -17,6 +19,7 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.ConfigUriService();
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(EcommerceAPI.Presentation.AssemblyReference).Assembly)

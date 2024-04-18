@@ -1,7 +1,10 @@
 ﻿using EcommerceAPI.Entity.DTOs;
 using EcommerceAPI.Entity.Enums;
+using EcommerceAPI.Entity.PaginationModels;
 using EcommerceAPI.Interface.IService;
 using EcommerceAPI.Presentation.ActionFilters;
+using EcommerceAPI.Service.UriService;
+using EcommerceAPI.Utils.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceAPI.Presentation.Controllers.v1
@@ -12,16 +15,20 @@ namespace EcommerceAPI.Presentation.Controllers.v1
     public class UsersControllers : ControllerBase
     {
         private readonly IServiceManager _service;
-        public UsersControllers(IServiceManager service)
+        private readonly IUriService _uriService;
+        public UsersControllers(IServiceManager service, IUriService uriService)
         {
             _service = service;
+            _uriService = uriService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery] PaginationParams request)
         {
-            var result = await _service.UserService.GetAllUsersAsync(trackChanges: false);
-            return Ok(result);
+            var route = GetRoute();
+            var result = await _service.UserService.GetAllUsersAsync(request, trackChanges: false);
+            var pagedReponse = PaginationHelper.CreatePagedReponse<UserDto>(result.Item1, request, result.Item2, _uriService, route);
+            return Ok(pagedReponse);
         }
 
         [HttpGet("get-id-user/{id}", Name = "UserById")]
@@ -52,6 +59,12 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         {
             await _service.UserService.DeleteUserAsync(Id, request, true);
             return NoContent();
+        }
+
+        private string GetRoute()
+        {
+            var route = Request.Path.Value;
+            return route;
         }
     }
 }

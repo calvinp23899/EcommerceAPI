@@ -26,6 +26,16 @@ namespace EcommerceAPI.Entity.AppConstants
             public const string DS053 = "Invalid client request due to username or password. Please try again.";
             public const string DS054 = "Token is invalid or expired";
             public const string DS055 = "Token is invalid. Please try again.";
+
+            //DS100-150 Common
+            public const string DS100 = "Page number must be a positive integer, equal to 1 and less than or equal to {0}.";
+            public const string DS101 = "{0} is not specified.";
+            public const string DS102 = "Page size must be a positive integer, greater than 0 and less than or equal to 1 million.";
+        }
+
+        public class Logger
+        {
+            public const string MS001 = "User Controller: Get all user";
         }
     }
 }
