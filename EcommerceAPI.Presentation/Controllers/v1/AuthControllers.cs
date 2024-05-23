@@ -17,9 +17,9 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequestDto request, bool isCheckRefresh = false)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequestDto request)
         {
-            var tokenDto = await _service.AuthenticationService.CreateToken(request, isCheckRefresh);
+            var tokenDto = await _service.AuthenticationService.CreateToken(request, request.isCheckRefresh);
             return Ok(tokenDto);
         }
 

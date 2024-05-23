@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace EcommerceAPI.Entity.PaginationModels
         {
             Data = data;
         }
+        [JsonProperty(Order = 9)]
         public T Data { get; set; }
     }
 }
