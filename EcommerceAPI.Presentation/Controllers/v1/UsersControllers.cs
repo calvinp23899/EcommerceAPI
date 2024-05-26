@@ -1,21 +1,25 @@
 ﻿using EcommerceAPI.Entity.DTOs;
 using EcommerceAPI.Entity.Enums;
+using EcommerceAPI.Entity.ErrorModels;
 using EcommerceAPI.Entity.PaginationModels;
 using EcommerceAPI.Interface.IService;
 using EcommerceAPI.Presentation.ActionFilters;
 using EcommerceAPI.Service.UriService;
 using EcommerceAPI.Utils.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace EcommerceAPI.Presentation.Controllers.v1
 {
     [Route("api/users")]
     [Authorize(Role.SUPER_ADMIN)]
     [ApiController]
-    public class UsersControllers : ControllerBase
+    public class UsersControllers : CustomBaseController
     {
         private readonly IServiceManager _service;
         private readonly IUriService _uriService;
+
         public UsersControllers(IServiceManager service, IUriService uriService)
         {
             _service = service;
@@ -23,6 +27,9 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         }
 
         [HttpGet]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Get All User.", typeof(PagedResponse<UserDto>))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
         public async Task<IActionResult> GetUsers([FromQuery] PaginationParams request)
         {
             var route = GetRoute();
@@ -32,9 +39,9 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         }
 
         [HttpGet("get-id-user/{id}", Name = "UserById")]
-        public async Task<IActionResult> GetUserId(int id)
+        public async Task<IActionResult> GetUserId(int Id)
         {
-            var result = await _service.UserService.GetUserAsync(id, trackChanges: false);
+            var result = await _service.UserService.GetUserAsync(Id, trackChanges: false);
             return Ok(result);
         }
 
@@ -61,10 +68,6 @@ namespace EcommerceAPI.Presentation.Controllers.v1
             return NoContent();
         }
 
-        private string GetRoute()
-        {
-            var route = Request.Path.Value;
-            return route;
-        }
+        
     }
 }
