@@ -24,7 +24,7 @@ namespace EcommerceAPI.Entity.AppConstants
             public const string DS051 = "Unable to get refresh token due to client request has some invalid values. Please try again.";
             public const string DS052 = "Unable to get user due to password is invalid. Please try again.";
             public const string DS053 = "Invalid client request due to username or password. Please try again.";
-            public const string DS054 = "Token is invalid or expired";
+            public const string DS054 = "Authorization Failed. Token is invalid or expired.";
             public const string DS055 = "Token is invalid. Please try again.";
 
             //DS100-150 Common
