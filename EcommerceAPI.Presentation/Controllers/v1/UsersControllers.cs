@@ -26,10 +26,17 @@ namespace EcommerceAPI.Presentation.Controllers.v1
             _uriService = uriService;
         }
 
+        /// <summary>
+        /// Get a list of users added, pagination is supported.
+        /// </summary>
+        /// <returns>
+        /// Get a list of users added, pagination is supported.
+        /// </returns>
         [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.OK, "Get All User.", typeof(PagedResponse<UserDto>))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> GetUsers([FromQuery] PaginationParams request)
         {
             var route = GetRoute();
@@ -37,15 +44,33 @@ namespace EcommerceAPI.Presentation.Controllers.v1
             var pagedReponse = PaginationHelper.CreatePagedReponse<UserDto>(result.Item1, request, result.Item2, _uriService, route);
             return Ok(pagedReponse);
         }
-
+        /// <summary>
+        /// Perform an action get user detail by id.
+        /// </summary>
+        /// <returns>
+        /// Get existed user by id.
+        /// </returns>
         [HttpGet("get-id-user/{id}", Name = "UserById")]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Get User By Id.", typeof(UserDto))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> GetUserId(int Id)
         {
             var result = await _service.UserService.GetUserAsync(Id, trackChanges: false);
             return Ok(result);
         }
-
+        /// <summary>
+        /// Perform an action add a new user.
+        /// </summary>
+        /// <returns>
+        /// Added a new user.
+        /// </returns>
         [HttpPost]
+        [SwaggerResponse((int)HttpStatusCode.Created, "Add a new user.", typeof(UserDto))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDto request)
         {
             if (request is null)
@@ -53,15 +78,33 @@ namespace EcommerceAPI.Presentation.Controllers.v1
             var result = await _service.UserService.CreateUserAsync(request);
             return CreatedAtRoute("UserById", new { id = result.Id }, result);
         }
-
+        /// <summary>
+        /// Perform an action update existed user by id.
+        /// </summary>
+        /// <returns>
+        /// Update existed user.
+        /// </returns>
         [HttpPut("{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Update existed user by id.", typeof(UserDto))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> UpdateUser(int Id, [FromBody] UserUpdateDto request)
         {
             await _service.UserService.UpdateUserAsync(Id, request, true);
             return NoContent();
         }
-
+        /// <summary>
+        /// Perform an action delete existed user by id.
+        /// </summary>
+        /// <returns>
+        /// Delete a existed user.
+        /// </returns>
         [HttpDelete("{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Delete existed user by id.", typeof(UserDto))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> DeleteUser(int Id, [FromBody] UserDeleteDto request)
         {
             await _service.UserService.DeleteUserAsync(Id, request, true);

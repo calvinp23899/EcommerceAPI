@@ -56,7 +56,6 @@ namespace EcommerceAPI.Presentation.ActionFilters
                 Value = new
                 {
                     StatusCode = StatusCodes.Status401Unauthorized,
-                    Status = "Authorization Failed",
                     Message = Error.DS054
                 }
             };

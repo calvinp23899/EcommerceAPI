@@ -7,9 +7,13 @@ using EcommerceAPI.Service.LoggerService;
 using EcommerceAPI.Service.ManagementService;
 using EcommerceAPI.Service.UriService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 using System.Text;
 
 namespace EcommerceAPI.ServicesExtension
@@ -85,11 +89,28 @@ namespace EcommerceAPI.ServicesExtension
         {
             services.AddSwaggerGen(opt => 
             {
-                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
+                opt.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "MyAPI", 
+                    Version = "v1",
+                    Description = "This is the API for managing Ecommerce",
+                    TermsOfService = new Uri("https://www.linkedin.com/in/phuc-le-212b39170/"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Calvin",
+                        Email = "phucle23899@gmail.com",
+                        Url = new Uri("https://www.linkedin.com/in/phuc-le-212b39170/")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Copy Right 2024",
+                        Url = new Uri("https://www.linkedin.com/in/phuc-le-212b39170/"),
+                    }
+                });
                 opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Please enter AccessToken",
+                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 123456abcd')",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
@@ -109,6 +130,20 @@ namespace EcommerceAPI.ServicesExtension
                         new string[]{}
                     }
                 });
+                var xmlFile = $"{(typeof(EcommerceAPI.Presentation.AssemblyReference).Assembly).GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                opt.IncludeXmlComments(xmlPath);
+            });
+            services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
+        }
+        public static void ConfigSwaggerVersion(this IServiceCollection services)
+        {
+            services.AddApiVersioning(opt =>
+            {
+                opt.DefaultApiVersion = new ApiVersion(1, 0);
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.ReportApiVersions = true;
+                opt.ApiVersionReader = new UrlSegmentApiVersionReader();
             });
         }
     }
