@@ -31,6 +31,7 @@ namespace EcommerceAPI.Entity.AppConstants
             public const string DS100 = "Page number must be a positive integer, equal to 1 and less than or equal to {0}.";
             public const string DS101 = "{0} is not specified.";
             public const string DS102 = "Page size must be a positive integer, greater than 0 and less than or equal to 1 million.";
+            public const string DS103 = "Invalid value {0}. Please Try again.";
         }
 
         public class Logger

@@ -14,7 +14,10 @@ namespace EcommerceAPI.MappingProfile
             .ForCtorParam("FullName",
             opt => opt.MapFrom(x => string.Join(' ', x.FirstName, x.LastName)));
             //Create
-            CreateMap<UserCreationDto, User>();
+            CreateMap<UserCreationDto, User>()
+                //Config date only
+                .ForMember(x => x.DateOfBirth, 
+                opt => opt.MapFrom(src => src.DateOfBirth.ToDateTime(TimeOnly.MinValue)));
             //Update
             CreateMap<UserUpdateDto, User>();
             //Delete

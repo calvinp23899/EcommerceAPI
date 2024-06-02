@@ -3,6 +3,7 @@ using EcommerceAPI.Entity.Models;
 using EcommerceAPI.Entity.PaginationModels;
 using EcommerceAPI.Interface.IRepository.IEntitiesRepository;
 using EcommerceAPI.Utils.Common;
+using EcommerceAPI.Utils.Validation;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 

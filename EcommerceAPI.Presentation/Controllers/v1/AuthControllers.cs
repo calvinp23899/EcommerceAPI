@@ -9,7 +9,8 @@ using System.Net;
 
 namespace EcommerceAPI.Presentation.Controllers.v1
 {
-    [Route("api/authen")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiversion}/auth")]
     [ApiController]
     public class AuthControllers : ControllerBase
     {

@@ -1,4 +1,5 @@
-﻿using EcommerceAPI.Interface;
+﻿using EcommerceAPI.ConfigSwagger;
+using EcommerceAPI.Interface;
 using EcommerceAPI.Interface.IRepository;
 using EcommerceAPI.Interface.IService;
 using EcommerceAPI.Repository;
@@ -10,9 +11,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 using System.Text;
 
@@ -87,26 +90,10 @@ namespace EcommerceAPI.ServicesExtension
         }
         public static void ConfigSwaggerGen(this IServiceCollection services)
         {
+            //Config Swagger multiple version
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen(opt => 
-            {
-                opt.SwaggerDoc("v1", new OpenApiInfo 
-                { 
-                    Title = "MyAPI", 
-                    Version = "v1",
-                    Description = "This is the API for managing Ecommerce",
-                    TermsOfService = new Uri("https://www.linkedin.com/in/phuc-le-212b39170/"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Calvin",
-                        Email = "phucle23899@gmail.com",
-                        Url = new Uri("https://www.linkedin.com/in/phuc-le-212b39170/")
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Copy Right 2024",
-                        Url = new Uri("https://www.linkedin.com/in/phuc-le-212b39170/"),
-                    }
-                });
+            {               
                 opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
@@ -144,6 +131,10 @@ namespace EcommerceAPI.ServicesExtension
                 opt.AssumeDefaultVersionWhenUnspecified = true;
                 opt.ReportApiVersions = true;
                 opt.ApiVersionReader = new UrlSegmentApiVersionReader();
+            }).AddVersionedApiExplorer(opt =>
+            {
+                opt.GroupNameFormat = "'v'VVV";
+                opt.SubstituteApiVersionInUrl = true;
             });
         }
     }

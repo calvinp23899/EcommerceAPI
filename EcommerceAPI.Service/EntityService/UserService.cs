@@ -9,6 +9,7 @@ using System.ComponentModel.Design;
 using static EcommerceAPI.Entity.AppConstants.AppConstant;
 using EcommerceAPI.Entity.PaginationModels;
 using EcommerceAPI.Utils.Common;
+using EcommerceAPI.Utils.Validation;
 
 
 namespace EcommerceAPI.Service.EntityService
@@ -18,12 +19,14 @@ namespace EcommerceAPI.Service.EntityService
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private ValidateResourceV1 _validateResourceV1;
 
         public UserService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _validateResourceV1 = new ValidateResourceV1();
         }
         public async Task<(IEnumerable<UserDto>,int)> GetAllUsersAsync(PaginationParams request, bool trackChanges)
         {
@@ -46,6 +49,7 @@ namespace EcommerceAPI.Service.EntityService
 
         public async Task<UserDto> CreateUserAsync(UserCreationDto user)
         {
+            _validateResourceV1.ValidateUser(ref user);
             var userEntity = _mapper.Map<User>(user);
             _repository.User.CreateUser(userEntity);
             await _repository.SaveAsync();

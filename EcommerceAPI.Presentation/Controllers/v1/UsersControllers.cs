@@ -12,7 +12,8 @@ using System.Net;
 
 namespace EcommerceAPI.Presentation.Controllers.v1
 {
-    [Route("api/users")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiversion}/user")]
     [Authorize(Role.SUPER_ADMIN)]
     [ApiController]
     public class UsersControllers : CustomBaseController
@@ -50,7 +51,7 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         /// <returns>
         /// Get existed user by id.
         /// </returns>
-        [HttpGet("get-id-user/{id}", Name = "UserById")]
+        [HttpGet("{id:int}", Name = "UserById")]
         [SwaggerResponse((int)HttpStatusCode.OK, "Get User By Id.", typeof(UserDto))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
