@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20240331063452_InitDb")]
+    [Migration("20240703142925_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,8 +139,8 @@ namespace EcommerceAPI.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<bool?>("IsActive")
                         .IsRequired()
@@ -168,7 +168,7 @@ namespace EcommerceAPI.Migrations
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("VendorId")
+                    b.Property<int?>("VendorId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -194,6 +194,11 @@ namespace EcommerceAPI.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime");
 
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -201,8 +206,8 @@ namespace EcommerceAPI.Migrations
 
                     b.Property<string>("FilePath")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -244,7 +249,7 @@ namespace EcommerceAPI.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime");
+                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -282,7 +287,7 @@ namespace EcommerceAPI.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime?>("RefreshTokenExpiryTime")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -310,18 +315,18 @@ namespace EcommerceAPI.Migrations
                             Id = 1,
                             Address = "123 LA",
                             CreatedBy = "System",
-                            CreatedOn = new DateTime(2024, 3, 31, 13, 34, 52, 191, DateTimeKind.Local).AddTicks(598),
+                            CreatedOn = new DateTime(2024, 7, 3, 21, 29, 25, 614, DateTimeKind.Local).AddTicks(3012),
                             DateOfBirth = new DateTime(1999, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             FirstName = "super",
                             IsActive = true,
                             IsDeleted = false,
                             LastName = "admin",
-                            Password = "lb7IZuZ+iFZ/XEaLgrttZgqepPUEHZguQLH0f0+N89K1jJuy",
+                            Password = "kSeGNku8Mbtc4r+0b5l9IFl8OWCUBFngA/qeCThKLzLW/1RV",
                             PhoneNumber = "012345678",
                             Role = 1,
                             UpdatedBy = "System",
-                            UpdatedOn = new DateTime(2024, 3, 31, 13, 34, 52, 191, DateTimeKind.Local).AddTicks(606),
+                            UpdatedOn = new DateTime(2024, 7, 3, 21, 29, 25, 614, DateTimeKind.Local).AddTicks(3025),
                             Username = "superadmin"
                         },
                         new
@@ -329,18 +334,18 @@ namespace EcommerceAPI.Migrations
                             Id = 2,
                             Address = "1234 SA",
                             CreatedBy = "System",
-                            CreatedOn = new DateTime(2024, 3, 31, 13, 34, 52, 205, DateTimeKind.Local).AddTicks(3893),
+                            CreatedOn = new DateTime(2024, 7, 3, 21, 29, 25, 623, DateTimeKind.Local).AddTicks(6415),
                             DateOfBirth = new DateTime(1999, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "user1@gmail.com",
                             FirstName = "user1",
                             IsActive = true,
                             IsDeleted = false,
                             LastName = "user1",
-                            Password = "wXOyX0s9MfpWuh54eI0kFlQKZxYBi01JIRD1s57l5TpwOYrI",
+                            Password = "mK6Yl16rHZo70mnsgiYZtDNN0JjPcmqQlZJMu+FQytIKDP0V",
                             PhoneNumber = "0987654321",
-                            Role = 1,
+                            Role = 0,
                             UpdatedBy = "System",
-                            UpdatedOn = new DateTime(2024, 3, 31, 13, 34, 52, 205, DateTimeKind.Local).AddTicks(3901),
+                            UpdatedOn = new DateTime(2024, 7, 3, 21, 29, 25, 623, DateTimeKind.Local).AddTicks(6418),
                             Username = "user1"
                         });
                 });
@@ -412,8 +417,7 @@ namespace EcommerceAPI.Migrations
                     b.HasOne("EcommerceAPI.Entity.Models.Vendor", "Vendor")
                         .WithMany("Products")
                         .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Vendor");
                 });

@@ -15,10 +15,10 @@ namespace EcommerceAPI.Entity.Models
         public string? Description { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsHot { get; set; }
-        public int VendorId { get; set; }
-        public Vendor Vendor { get; set; }
-        public ICollection<OrderDetail> OrderDetails { get; set; }
-        public ICollection<ProductFile> ProductFiles { get; set; }
+        public int? VendorId { get; set; }
+        public Vendor? Vendor { get; set; }
+        public ICollection<OrderDetail>? OrderDetails { get; set; }
+        public ICollection<ProductFile>? ProductFiles { get; set; }
 
     }
 }

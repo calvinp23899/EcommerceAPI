@@ -24,7 +24,11 @@ namespace EcommerceAPI.Repository.Configuration
             builder.Property(p => p.FilePath)
                 .IsRequired()
                 .HasColumnType("varchar")
-                .HasMaxLength(255);
+                .HasMaxLength(500);
+            builder.Property(p => p.Extension)
+                .IsRequired()
+                .HasColumnType("varchar")
+                .HasMaxLength(10);
             builder.Property(p => p.CreatedBy)
                     .HasColumnType("varchar")
                     .HasMaxLength(250);

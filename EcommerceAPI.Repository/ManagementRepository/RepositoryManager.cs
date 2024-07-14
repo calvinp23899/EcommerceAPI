@@ -9,18 +9,42 @@ using System.Threading.Tasks;
 
 namespace EcommerceAPI.Repository.ManagerRepository
 {
-    public sealed class RepositoryManager : IRepositoryManager
+    public sealed class RepositoryManager : IRepositoryManager, IDisposable
     {
         private readonly RepositoryContext _repositoryContext;
         private readonly Lazy<IUserRepository> _userRepository;
+        private readonly Lazy<IProductRepository> _productRepository;
+        private readonly Lazy<IProductFileRepository> _productFileRepository;
         public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
-            _userRepository = new Lazy<IUserRepository>(() => new
-            UserRepository(repositoryContext));
+            _userRepository = new Lazy<IUserRepository>(() => new UserRepository(repositoryContext));
+            _productRepository = new Lazy<IProductRepository>(() => new ProductRepository(repositoryContext));
+            _productFileRepository = new Lazy<IProductFileRepository>(() => new ProductFileRepository(repositoryContext));
         }
         public IUserRepository User => _userRepository.Value;
+        public IProductRepository Product => _productRepository.Value;
+        public IProductFileRepository ProductFile => _productFileRepository.Value;
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
 
+        #region GC 
+        private bool disposed = false;
+        protected void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _repositoryContext.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

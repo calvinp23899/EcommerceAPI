@@ -50,7 +50,7 @@ namespace EcommerceAPI.Repository.Configuration
                     .HasColumnType("varchar")
                     .HasMaxLength(250);
             builder.Property(p => p.DateOfBirth)
-                    .HasColumnType("datetime");
+                    .HasColumnType("date");
             builder.Property(p => p.Role)
                     .IsRequired(true)
                     .HasColumnType("int");

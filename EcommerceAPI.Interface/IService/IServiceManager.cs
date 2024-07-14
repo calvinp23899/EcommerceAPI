@@ -6,5 +6,6 @@ namespace EcommerceAPI.Interface.IService
     {
         IUserService UserService { get; }
         IAuthenticationService AuthenticationService { get; }
+        IProductService ProductService { get; }
     }
 }

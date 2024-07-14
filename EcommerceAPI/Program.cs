@@ -1,9 +1,11 @@
+using EcommerceAPI.ConfigSwagger;
 using EcommerceAPI.Extensions;
 using EcommerceAPI.Interface;
 using EcommerceAPI.Interface.IService;
 using EcommerceAPI.Service.UriService;
 using EcommerceAPI.ServicesExtension;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using NLog;
 using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,8 @@ LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentD
 
 
 // Add services to the container.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
@@ -31,18 +35,25 @@ builder.Services.AddControllers()
         opt.JsonSerializerOptions.PropertyNamingPolicy = null;
         // serialize enums as strings in api responses (e.g. Role)
         opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    })
-    ;
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+        // serialize date only as string
+        opt.JsonSerializerOptions.Converters.Add(new JsonDateOnlyConverter());
+    });
+
 var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
 
 
-
+var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+    {
+        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+            description.GroupName.ToUpperInvariant());
+    }
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsProduction())
     app.UseHsts();
