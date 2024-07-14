@@ -49,7 +49,10 @@ namespace EcommerceAPI.Service.EntityService
 
         public async Task<UserDto> CreateUserAsync(UserCreationDto user)
         {
-            _validateResourceV1.ValidateUser(ref user);
+            _validateResourceV1.ValidateRequiredUserFields(ref user);
+            var IsUserExist = await _repository.User.FindUserNameAsync(user.UserName, false);
+            if (IsUserExist != null)
+                throw new DataValidationException(string.Format(Error.DS003, user.UserName));
             var userEntity = _mapper.Map<User>(user);
             _repository.User.CreateUser(userEntity);
             await _repository.SaveAsync();
@@ -76,13 +79,6 @@ namespace EcommerceAPI.Service.EntityService
             if (user is null)
                 throw new DataNotFoundException(string.Format(Error.DS001, Id));
             return user;
-        }
-
-        private async Task CheckIfUserNameExists(int Id, bool trackChanges)
-        {
-            var user = await _repository.User.GetUserAsync(Id, trackChanges);
-            if (user is null)
-                throw new DataNotFoundException(string.Format(Error.DS001, Id));
         }
     }
 }

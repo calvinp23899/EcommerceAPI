@@ -15,10 +15,15 @@ namespace EcommerceAPI.Entity.AppConstants
 
         public class Error
         {
-            //DS001-050 For User
+            //DS001-025 For User
             public const string DS001 = "The user with id: {0} is not exist in the database.";
             public const string DS002 = "The user with username: {0} is not exist in the database.";
-            
+            public const string DS003 = "The user with username: {0} is already exist in the database.";
+
+            //DS026-049 For Product
+            public const string DS026 = "The product with name: {0} is already exist in the database.";
+
+
             //DS050-060 For Authentication
             public const string DS050 = "Unable to get refresh token due to AccessToken is invalid. Please try again.";
             public const string DS051 = "Unable to get refresh token due to client request has some invalid values. Please try again.";
@@ -32,6 +37,10 @@ namespace EcommerceAPI.Entity.AppConstants
             public const string DS101 = "{0} is not specified.";
             public const string DS102 = "Page size must be a positive integer, greater than 0 and less than or equal to 1 million.";
             public const string DS103 = "Invalid value {0}. Please Try again.";
+            public const string DS104 = "These fields are missing: {0}. Please Try again.";
+            public const string DS105 = "Invalid format json product. Please Try again.";
+            public const string DS106 = "The field {0} is missing. Please Try again.";
+            public const string DS107 = "JsonProduct can not be null. Please input correct format and try again.";
         }
 
         public class Logger

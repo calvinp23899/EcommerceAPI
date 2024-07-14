@@ -22,10 +22,10 @@ namespace EcommerceAPI.Migrations
                     Email = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
                     PhoneNumber = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
                     Address = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "date", nullable: true),
                     Role = table.Column<int>(type: "int", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "date", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
@@ -92,10 +92,10 @@ namespace EcommerceAPI.Migrations
                     ProductName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     Price = table.Column<decimal>(type: "decimal", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "varchar", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsHot = table.Column<bool>(type: "bit", nullable: true),
-                    VendorId = table.Column<int>(type: "int", nullable: false),
+                    VendorId = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
                     UpdatedBy = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -152,7 +152,8 @@ namespace EcommerceAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FileName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    FilePath = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    FilePath = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
+                    Extension = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
                     UpdatedBy = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
@@ -173,12 +174,12 @@ namespace EcommerceAPI.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Address", "CreatedBy", "CreatedOn", "DateOfBirth", "Email", "FirstName", "IsActive", "IsDeleted", "LastName", "Password", "PhoneNumber", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UpdatedBy", "UpdatedOn", "Username" },
-                values: new object[] { 1, "123 LA", "System", new DateTime(2024, 3, 31, 13, 34, 52, 191, DateTimeKind.Local).AddTicks(598), new DateTime(1999, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", "super", true, false, "admin", "lb7IZuZ+iFZ/XEaLgrttZgqepPUEHZguQLH0f0+N89K1jJuy", "012345678", null, null, 1, "System", new DateTime(2024, 3, 31, 13, 34, 52, 191, DateTimeKind.Local).AddTicks(606), "superadmin" });
+                values: new object[] { 1, "123 LA", "System", new DateTime(2024, 7, 3, 21, 29, 25, 614, DateTimeKind.Local).AddTicks(3012), new DateTime(1999, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", "super", true, false, "admin", "kSeGNku8Mbtc4r+0b5l9IFl8OWCUBFngA/qeCThKLzLW/1RV", "012345678", null, null, 1, "System", new DateTime(2024, 7, 3, 21, 29, 25, 614, DateTimeKind.Local).AddTicks(3025), "superadmin" });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Address", "CreatedBy", "CreatedOn", "DateOfBirth", "Email", "FirstName", "IsActive", "IsDeleted", "LastName", "Password", "PhoneNumber", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UpdatedBy", "UpdatedOn", "Username" },
-                values: new object[] { 2, "1234 SA", "System", new DateTime(2024, 3, 31, 13, 34, 52, 205, DateTimeKind.Local).AddTicks(3893), new DateTime(1999, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "user1@gmail.com", "user1", true, false, "user1", "wXOyX0s9MfpWuh54eI0kFlQKZxYBi01JIRD1s57l5TpwOYrI", "0987654321", null, null, 1, "System", new DateTime(2024, 3, 31, 13, 34, 52, 205, DateTimeKind.Local).AddTicks(3901), "user1" });
+                values: new object[] { 2, "1234 SA", "System", new DateTime(2024, 7, 3, 21, 29, 25, 623, DateTimeKind.Local).AddTicks(6415), new DateTime(1999, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "user1@gmail.com", "user1", true, false, "user1", "mK6Yl16rHZo70mnsgiYZtDNN0JjPcmqQlZJMu+FQytIKDP0V", "0987654321", null, null, 0, "System", new DateTime(2024, 7, 3, 21, 29, 25, 623, DateTimeKind.Local).AddTicks(6418), "user1" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_UserId",

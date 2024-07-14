@@ -28,12 +28,11 @@ namespace EcommerceAPI.Repository.Configuration
                 .IsRequired()
                 .HasColumnType("int");
             builder.Property(p => p.Description)
-                .IsRequired()
-                .HasColumnType("varchar");
+                .IsRequired(false)
+                .HasColumnType("nvarchar")
+                .HasMaxLength(1000);
             builder.Property(p => p.IsActive)
                 .IsRequired()
-                .HasColumnType("bit");
-            builder.Property(p => p.IsActive)
                 .HasColumnType("bit");
             builder.Property(p => p.IsHot)
                 .HasColumnType("bit");

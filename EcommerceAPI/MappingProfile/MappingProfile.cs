@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EcommerceAPI.Entity.DTOs;
+using EcommerceAPI.Entity.DTOs.ProductDtos;
 using EcommerceAPI.Entity.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -25,6 +26,16 @@ namespace EcommerceAPI.MappingProfile
             CreateMap<User, AuthenticationResponseDto>();
             CreateMap<UpdateRefreshTokenDto, User>();
 
+            //Create ProductAPI
+            CreateMap<ProductCreationDto, Product>();
+            CreateMap<Product, ProductDto>()
+            .ForMember(dto => dto.ProductName, opt => opt.MapFrom(p => p.ProductName))
+            .ForMember(dto => dto.Price, opt => opt.MapFrom(p => p.Price))
+            .ForMember(dto => dto.Quantity, opt => opt.MapFrom(p => p.Quantity))
+            .ForMember(dto => dto.Description, opt => opt.MapFrom(p => p.Description))
+            .ForMember(dto => dto.Path, opt => opt.MapFrom(src => src.ProductFiles.Select(pf => pf.FilePath).ToList()));
+
+       
         }
     }
 }

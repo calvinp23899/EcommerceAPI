@@ -11,7 +11,8 @@ namespace EcommerceAPI.Entity.Models
     {
         public string FileName { get; set; }
         public string FilePath { get; set; }
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public string Extension { get; set; }
+        public int? ProductId { get; set; }
+        public Product? Product { get; set; }
     }
 }
