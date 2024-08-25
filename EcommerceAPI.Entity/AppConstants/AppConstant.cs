@@ -22,6 +22,7 @@ namespace EcommerceAPI.Entity.AppConstants
 
             //DS026-049 For Product
             public const string DS026 = "The product with name: {0} is already exist in the database.";
+            public const string DS027 = "The product with id: {0} is not exist in the database.";
 
 
             //DS050-060 For Authentication

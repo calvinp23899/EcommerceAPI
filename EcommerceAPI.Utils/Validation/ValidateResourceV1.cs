@@ -92,10 +92,13 @@ namespace EcommerceAPI.Utils.Validation
         }
         public async Task CreateFile(IFormFile file, string execPath)
         {
-            using (var stream = new FileStream(execPath, FileMode.Create))
+            if (!File.Exists(execPath))
             {
-                file.CopyTo(stream);
-            }
+                using (var stream = new FileStream(execPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+            }           
         }
         public string CheckingFileExtension(string extensionFile)
         {
@@ -122,5 +125,6 @@ namespace EcommerceAPI.Utils.Validation
                 throw new DataValidationException($"A filename cannot contains special character '\' '/' ':' '*' '?' '<' '>' '|'");
             return fileName;
         }
+
     }
 }

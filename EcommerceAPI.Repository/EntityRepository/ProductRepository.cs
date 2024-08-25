@@ -29,13 +29,23 @@ namespace EcommerceAPI.Repository.EntityRepository
             Create(product);
         }
 
-        public Task<IEnumerable<Product>> GetAllProductsAsync(PaginationParams request, bool trackChanges)
+        public async Task<IEnumerable<Product>> GetAllProductsAsync(PaginationParams request, bool trackChanges)
         {
-            throw new NotImplementedException();
+            return await FindAll(trackChanges).Include(x=>x.ProductFiles).OrderByDescending(c => c.Id)
+                  .Skip((request.PageNumber - 1) * request.PageSize)
+                  .Take(request.PageSize)
+                  .ToListAsync();
         }
         public async Task<Product> FindProductNameAsync(string productName, bool trackChanges)
         {
             return await FindByCondition(c => c.ProductName.Equals(productName.ToLower().Trim()), trackChanges).SingleOrDefaultAsync();
         }
+
+        public async Task<Product> FindProductByIdAsync(int Id, bool trackChanges)
+        {
+            return await FindByCondition(c => c.Id.Equals(Id), trackChanges).FirstOrDefaultAsync();
+        }
+
+        public void DeleteProduct(Product product) => Delete(product);
     }
 }

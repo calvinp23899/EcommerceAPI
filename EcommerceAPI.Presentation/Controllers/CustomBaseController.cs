@@ -1,4 +1,5 @@
-﻿using EcommerceAPI.Interface.IService;
+﻿using EcommerceAPI.Entity.ResponseModels;
+using EcommerceAPI.Interface.IService;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,20 @@ namespace EcommerceAPI.Presentation.Controllers
         {
             var route = Request.Path.Value;
             return route;
+        }
+
+        protected IActionResult CustomJsonResponse(int statusCode, string message)
+        {
+            var response = new ResponseDetails
+            {
+                StatusCode = statusCode,
+                Message = message            
+            };
+
+            return new JsonResult(response)
+            {
+                StatusCode = statusCode
+            };
         }
     }
 }

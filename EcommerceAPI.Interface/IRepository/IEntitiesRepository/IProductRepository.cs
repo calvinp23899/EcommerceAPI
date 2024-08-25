@@ -13,5 +13,9 @@ namespace EcommerceAPI.Interface.IRepository.IEntitiesRepository
         Task<IEnumerable<Product>> GetAllProductsAsync(PaginationParams request, bool trackChanges);
         void CreateProduct(Product product, string userName,List<ProductFile> listFiles);
         Task<Product> FindProductNameAsync(string productName, bool trackChanges);
+        Task<Product> FindProductByIdAsync(int Id, bool trackChanges);
+        void DeleteProduct(Product product);
+
+
     }
 }

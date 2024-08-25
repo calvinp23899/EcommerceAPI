@@ -49,6 +49,7 @@ namespace EcommerceAPI.Service.EntityService
 
         public async Task<UserDto> CreateUserAsync(UserCreationDto user)
         {
+            _logger.LogInfo($"Create user");
             _validateResourceV1.ValidateRequiredUserFields(ref user);
             var IsUserExist = await _repository.User.FindUserNameAsync(user.UserName, false);
             if (IsUserExist != null)
@@ -61,6 +62,7 @@ namespace EcommerceAPI.Service.EntityService
         }
         public async Task UpdateUserAsync(int Id,UserUpdateDto user, bool trackChanges)
         {
+            _logger.LogInfo($"Update user id: {Id}");
             var userEntity = await CheckIfUserExists(Id, trackChanges);
             _mapper.Map(user, userEntity);
             await _repository.SaveAsync();
@@ -68,6 +70,7 @@ namespace EcommerceAPI.Service.EntityService
 
         public async Task DeleteUserAsync(int Id, UserDeleteDto user, bool trackChanges)
         {
+            _logger.LogInfo($"Delete user id: {Id}");
             var userEntity = await CheckIfUserExists(Id, trackChanges);
             _mapper.Map(user, userEntity);
             await _repository.SaveAsync();

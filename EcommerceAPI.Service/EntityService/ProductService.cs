@@ -1,21 +1,17 @@
 ﻿using AutoMapper;
 using EcommerceAPI.Entity.DTOs.ProductDtos;
-using EcommerceAPI.Entity.PaginationModels;
-using EcommerceAPI.Interface.IRepository;
-using EcommerceAPI.Interface;
-using EcommerceAPI.Interface.IService.IEntityService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EcommerceAPI.Utils.Validation;
-using EcommerceAPI.Entity.Models;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
-using static EcommerceAPI.Entity.AppConstants.AppConstant;
 using EcommerceAPI.Entity.Exceptions;
-using EcommerceAPI.Entity.DTOs;
+using EcommerceAPI.Entity.Models;
+using EcommerceAPI.Entity.PaginationModels;
+using EcommerceAPI.Interface;
+using EcommerceAPI.Interface.IRepository;
+using EcommerceAPI.Interface.IService.IEntityService;
+using EcommerceAPI.Utils.Common;
+using EcommerceAPI.Utils.Validation;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Text;
+using static EcommerceAPI.Entity.AppConstants.AppConstant;
 
 namespace EcommerceAPI.Service.EntityService
 {
@@ -42,6 +38,7 @@ namespace EcommerceAPI.Service.EntityService
             if (Images.Length > 0)
             {
                 listFile = await _validateResourceV1.ValidateImageListFile(Images);
+                await CheckingExistFileName(listFile);
                 listFile.ForEach(n => _repository.ProductFile.CreateProductFile(n));
             }
             //Handle AddProduct
@@ -61,16 +58,63 @@ namespace EcommerceAPI.Service.EntityService
                 throw new DataValidationException(string.Format(Error.DS026, request.ProductName));
             var productEntity = _mapper.Map<Product>(request);
             _repository.Product.CreateProduct(productEntity,"Admin", listFile);
-            var result = _mapper.Map<ProductDto>(productEntity);
 
             await _repository.SaveAsync();
+            var result = _mapper.Map<ProductDto>(productEntity);
             return result;
         }
 
-        public Task<(IEnumerable<ProductDto>, int)> GetAllProductsAsync(PaginationParams request, bool trackChanges)
+        public async Task DeleteProductAsync(int Id, bool trackChanges)
+        {
+            _logger.LogInfo($"Delete products by id {Id}");
+            var rs = await CheckIfProductExists(Id, trackChanges);
+            _repository.Product.DeleteProduct(rs);
+            await _repository.SaveAsync();
+        }
+
+        public async Task<(IEnumerable<ProductDto>, int)> GetAllProductsAsync(PaginationParams request, bool trackChanges)
         {
             _logger.LogInfo("Get all products");
-            throw new NotImplementedException();
+            PagingUtils.ValidatePaging(request.PageNumber, request.PageSize);
+            var listProduct = await _repository.Product.GetAllProductsAsync(request, trackChanges);          
+            var result = _mapper.Map<IEnumerable<ProductDto>>(listProduct);
+            return (result, listProduct.Count());
+        }
+
+        private async Task CheckingExistFileName(List<ProductFile> listFile)
+        {
+            StringBuilder str = new StringBuilder();
+            foreach (var file in listFile)
+            {
+                var fileExist = await _repository.ProductFile.FindProductFileNameAsync(file.FileName, false);
+                if (fileExist != null)
+                {
+                    str.Append(fileExist.FileName + ",");
+                }
+            }
+            if (str.Length > 0)
+            {
+                str.Remove(str.Length - 1, 1);
+                throw new DataValidationException($"{str} files already existed");
+            }
+        }
+
+        private async Task<Product> CheckIfProductExists(int Id, bool trackChanges)
+        {
+            var productEntity = await _repository.Product.FindProductByIdAsync(Id, trackChanges);
+            if (productEntity is null)
+                throw new DataNotFoundException(string.Format(Error.DS027, Id));
+            return productEntity;
+        }
+
+        public async Task UpdateProductAsync(int Id, ProductUpdateDto request, bool trackChanges)
+        {
+            _logger.LogInfo($"Update product id: {Id}");
+            var productEntity = await CheckIfProductExists(Id, trackChanges);
+            _mapper.Map(request, productEntity);
+            if (productEntity.VendorId == 0)
+                productEntity.VendorId = null;
+            await _repository.SaveAsync();
         }
     }
 }

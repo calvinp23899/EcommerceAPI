@@ -14,5 +14,9 @@ namespace EcommerceAPI.Interface.IService.IEntityService
     {
         Task<(IEnumerable<ProductDto>, int)> GetAllProductsAsync(PaginationParams request, bool trackChanges);
         Task<ProductDto> CreateProductAsync(string product, IFormFile[] Images);
+        Task DeleteProductAsync(int Id, bool trackChanges);
+        Task UpdateProductAsync(int Id, ProductUpdateDto request, bool trackChanges);
+
+
     }
 }

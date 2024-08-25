@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # ProduceImage folder
 /ProductImage/
+
+# Internal Logs Folder
+/internal_logs/
