@@ -27,6 +27,7 @@ builder.Services.ConfigUriService();
 builder.Services.ConfigSwaggerGen();
 builder.Services.ConfigSwaggerVersion();
 
+
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(EcommerceAPI.Presentation.AssemblyReference).Assembly)
     .AddJsonOptions(opt =>
@@ -40,6 +41,7 @@ builder.Services.AddControllers()
     });
 
 var app = builder.Build();
+
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
 

@@ -1,5 +1,6 @@
 ﻿using EcommerceAPI.Entity.Models;
 using EcommerceAPI.Interface.IRepository.IEntitiesRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,11 @@ namespace EcommerceAPI.Repository.EntityRepository
         public void DeleteProductFile(ProductFile productFile)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ProductFile> FindProductFileNameAsync(string fileName, bool trackChanges)
+        {
+            return await FindByCondition(c => c.FileName.Equals(fileName), trackChanges).FirstOrDefaultAsync();
         }
     }
 }

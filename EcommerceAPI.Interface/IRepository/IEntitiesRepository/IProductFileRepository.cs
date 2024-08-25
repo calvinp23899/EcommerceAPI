@@ -9,6 +9,7 @@ namespace EcommerceAPI.Interface.IRepository.IEntitiesRepository
 {
     public interface IProductFileRepository
     {
+        Task<ProductFile> FindProductFileNameAsync(string fileName, bool trackChanges);
         void CreateProductFile(ProductFile productFile);
         void DeleteProductFile(ProductFile productFile);
     }

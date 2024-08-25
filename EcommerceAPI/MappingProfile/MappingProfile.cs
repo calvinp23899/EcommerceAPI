@@ -10,6 +10,7 @@ namespace EcommerceAPI.MappingProfile
     {
         public MappingProfile()
         {
+            #region User Mapping Profile
             //Get
             CreateMap<User, UserDto>()
             .ForCtorParam("FullName",
@@ -17,7 +18,7 @@ namespace EcommerceAPI.MappingProfile
             //Create
             CreateMap<UserCreationDto, User>()
                 //Config date only
-                .ForMember(x => x.DateOfBirth, 
+                .ForMember(x => x.DateOfBirth,
                 opt => opt.MapFrom(src => src.DateOfBirth.ToDateTime(TimeOnly.MinValue)));
             //Update
             CreateMap<UserUpdateDto, User>();
@@ -25,7 +26,9 @@ namespace EcommerceAPI.MappingProfile
             CreateMap<UserDeleteDto, User>();
             CreateMap<User, AuthenticationResponseDto>();
             CreateMap<UpdateRefreshTokenDto, User>();
+            #endregion
 
+            #region Product Mapping Profile
             //Create ProductAPI
             CreateMap<ProductCreationDto, Product>();
             CreateMap<Product, ProductDto>()
@@ -34,8 +37,10 @@ namespace EcommerceAPI.MappingProfile
             .ForMember(dto => dto.Quantity, opt => opt.MapFrom(p => p.Quantity))
             .ForMember(dto => dto.Description, opt => opt.MapFrom(p => p.Description))
             .ForMember(dto => dto.Path, opt => opt.MapFrom(src => src.ProductFiles.Select(pf => pf.FilePath).ToList()));
+            //Update
+            CreateMap<ProductUpdateDto, Product>();
+            #endregion
 
-       
         }
     }
 }
