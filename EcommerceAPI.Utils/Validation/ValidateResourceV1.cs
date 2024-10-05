@@ -1,4 +1,5 @@
 ﻿using EcommerceAPI.Entity.DTOs;
+using EcommerceAPI.Entity.DTOs.OrderDtos;
 using EcommerceAPI.Entity.DTOs.ProductDtos;
 using EcommerceAPI.Entity.Enums;
 using EcommerceAPI.Entity.Exceptions;
@@ -124,6 +125,36 @@ namespace EcommerceAPI.Utils.Validation
             if (IsCheckFileName)
                 throw new DataValidationException($"A filename cannot contains special character '\' '/' ':' '*' '?' '<' '>' '|'");
             return fileName;
+        }
+
+        virtual public void ValidateRequiredOrderFields(ref OrderCreationDto orderItems)
+        {
+            if (orderItems.UserId < 1)
+                ValidateAnonymousUser(orderItems.AnonymousName, orderItems.AnonymousEmail, orderItems.AnonymousAddress, orderItems.AnonymousPhone);
+            if (orderItems.Items.Count == 0)
+                throw new DataValidationException("No items in cart. please try to add at least 1 item.");
+            if (orderItems.TotalOrder < 1)
+                throw new DataValidationException("The valid value for TotalOrder is greater than 1");
+            decimal totalAllItems = orderItems.Items.Sum(x => x.TotalPrice);
+            if (totalAllItems != orderItems.TotalOrder)
+                throw new DataValidationException("Incorrect value for TotalOrder based on information of Items");
+            CheckValidPaymentMethod(orderItems.PaymentMethod.ToString().ToUpper());
+
+        }
+        virtual public void ValidateAnonymousUser(string anonymousName,string anonymousEmail,string anonymousAddress, string anonymousPhone)
+        {
+            if(string.IsNullOrWhiteSpace(anonymousName) ||
+                string.IsNullOrWhiteSpace(anonymousEmail) ||
+                string.IsNullOrWhiteSpace(anonymousAddress) ||
+                string.IsNullOrWhiteSpace(anonymousPhone))
+            {
+                throw new DataValidationException("Please input anonymous fields and try again.");
+            }
+        }
+        public void CheckValidPaymentMethod(string input) 
+        {
+            if (!Enum.TryParse(input.ToUpper(), out PaymentMethod _)) 
+                throw new DataValidationException($"Invalid operation {input}"); 
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EcommerceAPI.Entity.DTOs;
+using EcommerceAPI.Entity.DTOs.OrderDtos;
 using EcommerceAPI.Entity.DTOs.ProductDtos;
 using EcommerceAPI.Entity.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -39,6 +40,16 @@ namespace EcommerceAPI.MappingProfile
             .ForMember(dto => dto.Path, opt => opt.MapFrom(src => src.ProductFiles.Select(pf => pf.FilePath).ToList()));
             //Update
             CreateMap<ProductUpdateDto, Product>();
+            #endregion
+
+            #region Order Mapping Profile
+            CreateMap<OrderCreationDto, Order>();
+            CreateMap<OrderItem, OrderDetail>()
+            .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
+            .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
+            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
+            .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.TotalPrice));
+            CreateMap<Order, OrderDto>();
             #endregion
 
         }

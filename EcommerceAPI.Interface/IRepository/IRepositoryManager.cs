@@ -12,6 +12,8 @@ namespace EcommerceAPI.Interface.IRepository
         IUserRepository User { get; }
         IProductRepository Product { get; }
         IProductFileRepository ProductFile { get; }
+        IOrderRepository Order { get; }
+        IOrderDetailRepository OrderDetail { get; }
         Task SaveAsync();
     }
 }
