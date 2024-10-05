@@ -21,17 +21,19 @@ namespace EcommerceAPI.Service.ManagementService
         private readonly Lazy<IUserService> _userService;
         private readonly Lazy<IAuthenticationService> _authenticationService;
         private readonly Lazy<IProductService> _productService;
+        private readonly Lazy<IOrderService> _orderService;
 
         public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper, IConfiguration configuration)
         {
             _userService = new Lazy<IUserService>(() => new UserService(repositoryManager, logger, mapper));
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(repositoryManager, logger, mapper, configuration));
             _productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, logger, mapper));
+            _orderService = new Lazy<IOrderService>(() => new OrderService(repositoryManager, logger, mapper));
 
         }
         public IUserService UserService => _userService.Value;
         public IProductService ProductService => _productService.Value;
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
-
+        public IOrderService OrderService => _orderService.Value;
     }
 }

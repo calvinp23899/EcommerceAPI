@@ -15,8 +15,12 @@ namespace EcommerceAPI.Entity.Models
         public decimal? Tax { get; set; }
         public decimal TotalOrder { get; set; }
         public OrderStatus Status { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public int? UserId { get; set; }
+        public User? User { get; set; }
+        public string? AnonymousName { get; set; }
+        public string? AnonymousEmail { get; set; }
+        public string? AnonymousPhone { get; set; }
+        public string? AnonymousAddress { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
 
     }

@@ -33,6 +33,22 @@ namespace EcommerceAPI.Repository.Configuration
             builder.Property(p => p.Status)
                     .IsRequired(true)
                     .HasColumnType("int");
+            builder.Property(p => p.AnonymousName)
+                     .IsRequired(false)
+                     .HasColumnType("varchar")
+                     .HasMaxLength(255);
+            builder.Property(p => p.AnonymousEmail)
+                     .IsRequired(false)
+                     .HasColumnType("varchar")
+                     .HasMaxLength(255);
+            builder.Property(p => p.AnonymousPhone)
+                     .IsRequired(false)
+                     .HasColumnType("varchar")
+                     .HasMaxLength(255);
+            builder.Property(p => p.AnonymousAddress)
+                     .IsRequired(false)
+                     .HasColumnType("varchar")
+                     .HasMaxLength(255);
             builder.Property(p => p.CreatedBy)
                     .HasColumnType("varchar")
                     .HasMaxLength(250);
