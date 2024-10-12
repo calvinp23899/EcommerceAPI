@@ -45,11 +45,20 @@ namespace EcommerceAPI.MappingProfile
             #region Order Mapping Profile
             CreateMap<OrderCreationDto, Order>();
             CreateMap<OrderItem, OrderDetail>()
-            .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
-            .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
-            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
-            .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.TotalPrice));
+                .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
+                .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.TotalPrice));
             CreateMap<Order, OrderDto>();
+            CreateMap<OrderDetail, OrderDetailProductDto>();
+            CreateMap<Order, OrderDetailDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.OrderNumber, opt => opt.MapFrom(src => src.OrderNumber))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Tax, opt => opt.MapFrom(src => src.Tax))
+                .ForMember(dest => dest.TotalOrder, opt => opt.MapFrom(src => src.TotalOrder))
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => src.CreatedOn))
+                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy));
             #endregion
 
         }

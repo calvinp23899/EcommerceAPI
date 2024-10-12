@@ -127,7 +127,7 @@ namespace EcommerceAPI.Utils.Validation
             return fileName;
         }
 
-        virtual public void ValidateRequiredOrderFields(ref OrderCreationDto orderItems)
+        virtual public void ValidateOrderCreation(ref OrderCreationDto orderItems)
         {
             if (orderItems.UserId < 1)
                 ValidateAnonymousUser(orderItems.AnonymousName, orderItems.AnonymousEmail, orderItems.AnonymousAddress, orderItems.AnonymousPhone);
@@ -148,8 +148,9 @@ namespace EcommerceAPI.Utils.Validation
                 string.IsNullOrWhiteSpace(anonymousAddress) ||
                 string.IsNullOrWhiteSpace(anonymousPhone))
             {
-                throw new DataValidationException("Please input anonymous fields and try again.");
+                throw new DataValidationException("Please input anonymous fields or login to process order and try again.");
             }
+
         }
         public void CheckValidPaymentMethod(string input) 
         {

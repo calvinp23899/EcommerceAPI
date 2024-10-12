@@ -1,4 +1,5 @@
-﻿using EcommerceAPI.Entity.DTOs.OrderDtos;
+﻿using EcommerceAPI.Entity.DTOs;
+using EcommerceAPI.Entity.DTOs.OrderDtos;
 using EcommerceAPI.Entity.DTOs.ProductDtos;
 using EcommerceAPI.Entity.PaginationModels;
 using Microsoft.AspNetCore.Http;
@@ -14,5 +15,7 @@ namespace EcommerceAPI.Interface.IService.IEntityService
     {
         Task<(IEnumerable<OrderDto>, int)> GetAllOrdersAsync(PaginationParams request, bool trackChanges);
         Task<OrderDto> CreateOrderAsync(OrderCreationDto request);
+        Task<OrderDetailDto> GetOrderDetailAsync(int Id, bool trackChanges);
+        Task DeleteOrderAsync(int Id, bool trackChanges);
     }
 }

@@ -12,6 +12,11 @@ namespace EcommerceAPI.Interface.IRepository.IEntitiesRepository
     {
         Task<IEnumerable<Order>> GetAllOrdersAsync(PaginationParams request, bool trackChanges);
         void CreateOrder(Order request);
+        Task<int> CountAllOrderAsync(bool trackChanges);
+        Task<Order> FindOrderByIdAsync(int Id, bool trackChanges);
+        Task DeleteOrderAsync(Order request);
+
+
 
     }
 }
