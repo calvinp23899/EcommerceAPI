@@ -8,10 +8,9 @@ namespace EcommerceAPI.Entity.Enums
 {
     public enum OrderStatus
     {
-        Prepare = 0,
-        Delivering = 1,
-        Success = 2,
-        Cancel = 3,
-
+        PREPARE = 0,
+        DELIVERING = 1,
+        SUCCESS = 2,
+        CANCEL = 3,
     }
 }

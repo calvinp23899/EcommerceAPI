@@ -61,6 +61,9 @@ namespace EcommerceAPI.Repository.Configuration
             builder.Property(p => p.UpdatedOn)
                     .IsRequired()
                     .HasColumnType("datetime");
+            builder.Property(p => p.IsDeleted)
+                    .IsRequired(false)
+                    .HasColumnType("bit");
             #endregion
 
             #region Relationship

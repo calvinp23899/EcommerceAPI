@@ -47,12 +47,12 @@ namespace EcommerceAPI.Entity.AppConstants
         public class Logger
         {
             //MS001 - MS010 User
-            public const string MS001 = "User Controller: Get all user";
-
+            public const string MS001 = "User Service: Get all user";
             //MS011 - MS020 Product
-
+            public const string MS011 = "Product Service: Get all product";
             //MS021 - MS030 Order
-            public const string MS021 = "Order Controller: Get all order";
+            public const string MS021 = "Order Service: Get all order";
+            public const string MS022 = "Order Service: Get order id = {0}";
         }
     }
 }
