@@ -39,6 +39,9 @@ namespace EcommerceAPI.Repository.Configuration
                     .HasMaxLength(250);
             builder.Property(p => p.UpdatedOn)
                     .HasColumnType("datetime");
+            builder.Property(p => p.IsDeleted)
+                    .IsRequired(false)
+                    .HasColumnType("bit");
             #endregion
 
             #region Relationship

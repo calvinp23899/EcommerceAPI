@@ -26,6 +26,9 @@ namespace EcommerceAPI.Repository.Configuration
             builder.Property(p => p.Total)
                 .IsRequired(true)
                 .HasColumnType("decimal");
+            builder.Property(p => p.IsDeleted)
+                    .IsRequired(false)
+                    .HasColumnType("bit");
             #endregion
 
             #region Relationship

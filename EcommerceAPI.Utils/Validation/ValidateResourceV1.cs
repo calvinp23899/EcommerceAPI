@@ -157,6 +157,21 @@ namespace EcommerceAPI.Utils.Validation
             if (!Enum.TryParse(input.ToUpper(), out PaymentMethod _)) 
                 throw new DataValidationException($"Invalid operation {input}"); 
         }
-
+        public void CheckValidOrderStatus(string input)
+        {
+            if (!Enum.TryParse(input.ToUpper(), out OrderStatus _))
+                throw new DataValidationException($"Invalid order status {input}");
+        }
+        virtual public void ValidateOrderUpdated(OrderUpdateDto requestOrderUpdate)
+        {
+            CheckValidOrderStatus(requestOrderUpdate.Status.ToString().ToUpper());
+            if (requestOrderUpdate.Tax < 0)
+                throw new DataValidationException("Tax can be 0 or greater than 0");           
+            decimal totalAllItems = requestOrderUpdate.Items.Sum(x => (x.Quantity * x.UnitPrice));
+            if (totalAllItems != requestOrderUpdate.TotalOrder)
+                throw new DataValidationException("Incorrect value for TotalOrder based on information of Items");
+            if (requestOrderUpdate.Items.Count < 1)
+                throw new DataValidationException("At least 1 item in the list.");
+        }
     }
 }

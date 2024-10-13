@@ -23,7 +23,6 @@ namespace EcommerceAPI.Entity.Models
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
         public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
         public ICollection<Order> Orders { get; set; }
     }
 }
