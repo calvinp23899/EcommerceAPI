@@ -17,5 +17,7 @@ namespace EcommerceAPI.Interface.IService.IEntityService
         Task<OrderDto> CreateOrderAsync(OrderCreationDto request);
         Task<OrderDetailDto> GetOrderDetailAsync(int Id, bool trackChanges);
         Task DeleteOrderAsync(int Id, bool trackChanges);
+        Task<OrderDetailDto> UpdateOrderAsync(int Id, bool trackChanges, OrderUpdateDto requestUpdateOrder);
+
     }
 }

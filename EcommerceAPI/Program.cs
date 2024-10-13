@@ -2,6 +2,7 @@ using EcommerceAPI.ConfigSwagger;
 using EcommerceAPI.Extensions;
 using EcommerceAPI.Interface;
 using EcommerceAPI.Interface.IService;
+using EcommerceAPI.Repository;
 using EcommerceAPI.Service.UriService;
 using EcommerceAPI.ServicesExtension;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -41,9 +42,9 @@ builder.Services.AddControllers()
     });
 
 var app = builder.Build();
-
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
+app.HealthCheckDBConnection(logger);
 
 
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();

@@ -21,7 +21,6 @@ namespace EcommerceAPI.Entity.Models
         public string? AnonymousEmail { get; set; }
         public string? AnonymousPhone { get; set; }
         public string? AnonymousAddress { get; set; }
-        public bool? IsDeleted { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
 
     }

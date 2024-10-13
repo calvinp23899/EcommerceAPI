@@ -99,7 +99,7 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         /// </returns>
         [HttpDelete("{Id:int}", Name = "V1DeleteOrderById")]
         [SwaggerResponse((int)HttpStatusCode.OK, "Delete order successful.", typeof(ResponseDetails))]
-        [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform delete order.", typeof(ErrorDetails))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
         [SwaggerResponse((int)HttpStatusCode.NotFound, "Not Found.", typeof(ErrorDetails))]
         [MapToApiVersion("1.0")]
@@ -107,6 +107,23 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         {
             await _service.OrderService.DeleteOrderAsync(Id, trackChanges: true);
             return CustomJsonResponse(statusCode: 200, $"Delete order with id = {Id} is successful");
+        }
+        /// <summary>
+        /// Perform an action update order by id.
+        /// </summary>
+        /// <returns>
+        /// return updated order data successful.
+        /// </returns>
+        [HttpPut("{Id:int}", Name = "V1UpdateOrderById")]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Update order successful.", typeof(ResponseDetails))]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform update order.", typeof(ErrorDetails))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound, "Not Found.", typeof(ErrorDetails))]
+        [MapToApiVersion("1.0")]
+        public async Task<IActionResult> UpdateOrderById([Required] int Id, [FromBody] OrderUpdateDto requestUpdateOrder)
+        {
+            var result = await _service.OrderService.UpdateOrderAsync(Id, trackChanges: true, requestUpdateOrder);
+            return Ok(result);
         }
     }
 }

@@ -21,6 +21,9 @@ namespace EcommerceAPI.Repository.Configuration
                 .IsRequired(true)
                 .HasColumnType("varchar")
                 .HasMaxLength(255);
+            builder.Property(p => p.IsDeleted)
+                .IsRequired(false)
+                .HasColumnType("bit");
             #endregion
 
             #region Relationship

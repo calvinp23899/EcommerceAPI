@@ -38,10 +38,10 @@ namespace EcommerceAPI.Service.EntityService
         {
             _logger.LogInfo($"Create Order");
             _validateResourceV1.ValidateOrderCreation(ref request);
-            //Check exists items
-            foreach(var item in request.Items)
+            //Check validation items 
+            foreach (var item in request.Items)
             {
-                await CheckExistProduct(item.ProductId);
+                await ValidateProductItems(item.ProductId, item);
             }
             //Create OrderDetail
             var listOrderDetail = _mapper.Map<List<OrderDetail>>(request.Items);
@@ -97,6 +97,34 @@ namespace EcommerceAPI.Service.EntityService
             orderEntity.IsDeleted = true;
             await _repository.SaveAsync();
         }
+
+        public async Task<OrderDetailDto> UpdateOrderAsync(int Id, bool trackChanges, OrderUpdateDto requestUpdateOrder)
+        {
+            _logger.LogInfo($"Update Order with id = {Id}");
+            var orderEntity = await _repository.Order.FindOrderByIdAsync(Id, trackChanges);
+            if (orderEntity == null)
+                throw new DataNotFoundException($"Cannot locate the order = {Id}. Please try again.");
+            _validateResourceV1.ValidateOrderUpdated(requestUpdateOrder);
+            //Create new order detail
+            foreach ( var item in requestUpdateOrder.Items)
+            {
+                await ValidateProductItems(item.ProductId, item);
+            }
+            var newListProductUpdate = _mapper.Map<List<OrderDetail>>(requestUpdateOrder.Items);
+            newListProductUpdate.ForEach(x => _repository.OrderDetail.CreateOrderDetail(x));
+            //Update order
+            orderEntity.UpdatedOn = DateTime.Now;
+            orderEntity.Status = requestUpdateOrder.Status;
+            orderEntity.TotalOrder = requestUpdateOrder.TotalOrder;
+            orderEntity.Tax = requestUpdateOrder.Tax;
+            orderEntity.OrderDetails = newListProductUpdate; //when attach newListProductUpdate to orderDetail => EF automatic hard delete old product items
+            await _repository.SaveAsync();
+            //return result
+            var listProductOrderDetail = _mapper.Map<List<OrderDetailProductDto>>(newListProductUpdate);
+            var result = _mapper.Map<OrderDetailDto>(orderEntity);
+            result.listProductDto = listProductOrderDetail;
+            return result;
+        }
         #region Private Methods
         private string GenerateOrderNumber()
         {
@@ -105,21 +133,34 @@ namespace EcommerceAPI.Service.EntityService
 
             return $"{_prefixOrderNumber}{randomSuffix}{dateTime}";
         }
-        private async Task CheckExistProduct(int productId)
+        private async Task ValidateProductItems(int productId, OrderItem itemRequestCreation)
         {
             var rs = await _repository.Product.FindProductByIdAsync(productId, false);
             if (rs == null)
             {
                 throw new DataValidationException($"Invalid product id = {productId}");
             }
+            if(rs.Price != itemRequestCreation.UnitPrice)
+            {
+                throw new DataValidationException($"Invalid unit price for product id = {productId}");
+            }
+            if (itemRequestCreation.Quantity < 1)
+            {
+                throw new DataValidationException($"Invalid value quantity for product id = {productId}");
+            }
+            if (itemRequestCreation.UnitPrice * itemRequestCreation.Quantity != itemRequestCreation.TotalPrice)
+            {
+                throw new DataValidationException($"Invalid total price for product id = {productId}");
+            }
         }
         private async Task<OrderDetailProductDto> GetProductNameOrderDetail(int productId, OrderDetailProductDto orderDetailProductDto)
         {
             var productEntity = await _repository.Product.FindProductByIdAsync(productId, false);
+            if (productEntity == null)
+                throw new DataValidationException($"Invalid product id = {productId}");
             orderDetailProductDto.ProductName = productEntity.ProductName;
             return orderDetailProductDto;
         }
-
         #endregion
     }
 }
