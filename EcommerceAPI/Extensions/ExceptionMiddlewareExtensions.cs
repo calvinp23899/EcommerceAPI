@@ -23,6 +23,7 @@ namespace EcommerceAPI.Extensions
                         {
                             NotFoundException => StatusCodes.Status404NotFound,
                             BadRequestException => StatusCodes.Status400BadRequest,
+                            UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
                             _ => StatusCodes.Status500InternalServerError
                         };
                         logger.LogError($"Something went wrong: {contextFeature.Error.Message}");

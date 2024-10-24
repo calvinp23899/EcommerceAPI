@@ -1,4 +1,6 @@
-﻿using EcommerceAPI.ConfigSwagger;
+﻿using EcommerceAPI.Authorization.Handlers;
+using EcommerceAPI.Authorization.Requirements;
+using EcommerceAPI.ConfigSwagger;
 using EcommerceAPI.Interface;
 using EcommerceAPI.Interface.IRepository;
 using EcommerceAPI.Interface.IService;
@@ -8,6 +10,7 @@ using EcommerceAPI.Service.LoggerService;
 using EcommerceAPI.Service.ManagementService;
 using EcommerceAPI.Service.UriService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -137,6 +140,19 @@ namespace EcommerceAPI.ServicesExtension
             {
                 opt.GroupNameFormat = "'v'VVV";
                 opt.SubstituteApiVersionInUrl = true;
+            });
+        }
+
+        public static void ConfigAuthorizationPolicies(this IServiceCollection services)
+        {
+            services.AddSingleton<IAuthorizationHandler, AdminHandler>();
+
+            services.AddAuthorization(o =>
+            {
+                o.AddPolicy("IsAdmin", builder =>
+                {
+                    builder.AddRequirements(new IsAdminRequirement());
+                });
             });
         }
 

@@ -4,6 +4,7 @@ using EcommerceAPI.Entity.ErrorModels;
 using EcommerceAPI.Entity.PaginationModels;
 using EcommerceAPI.Interface.IService;
 using EcommerceAPI.Utils.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -63,6 +64,7 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all product.", typeof(ErrorDetails))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
         [MapToApiVersion("1.0")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<IActionResult> AddNewProducts([FromForm] string JsonProduct, IFormFile[] Images)
         {
             ProductDto rs = await _service.ProductService.CreateProductAsync(JsonProduct, Images);
@@ -80,6 +82,8 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
         [MapToApiVersion("1.0")]
+        [Authorize(Policy = "IsAdmin")]
+
         public async Task<IActionResult> UpdateProduct(int Id, [FromBody] ProductUpdateDto request)
         {
             await _service.ProductService.UpdateProductAsync(Id, request, true);
@@ -97,6 +101,8 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform get all user.", typeof(ErrorDetails))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
         [MapToApiVersion("1.0")]
+        [Authorize(Policy = "IsAdmin")]
+
         public async Task<IActionResult> DeleteProduct(int Id)
         {
             await _service.ProductService.DeleteProductAsync(Id, true);

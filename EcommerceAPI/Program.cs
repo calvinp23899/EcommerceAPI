@@ -27,6 +27,7 @@ builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.ConfigUriService();
 builder.Services.ConfigSwaggerGen();
 builder.Services.ConfigSwaggerVersion();
+builder.Services.ConfigAuthorizationPolicies();
 
 
 builder.Services.AddControllers()

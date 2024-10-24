@@ -6,6 +6,7 @@ using EcommerceAPI.Entity.ResponseModels;
 using EcommerceAPI.Interface.IService;
 using EcommerceAPI.Service.UriService;
 using EcommerceAPI.Utils.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
@@ -21,6 +22,7 @@ namespace EcommerceAPI.Presentation.Controllers.v1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiversion}/order")]
     [ApiController]
+    [Authorize(Policy = "IsAdmin")]
     public class OrderControllers : CustomBaseController
     {
         private readonly IServiceManager _service;
@@ -49,6 +51,7 @@ namespace EcommerceAPI.Presentation.Controllers.v1
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Internal error occurred while perform create order.", typeof(ErrorDetails))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, "Bad request.", typeof(ErrorDetails))]
         [MapToApiVersion("1.0")]
+
         public async Task<IActionResult> CreateOrder([FromBody] OrderCreationDto request)
         {
             var newOrderDto = await _service.OrderService.CreateOrderAsync(request);
