@@ -45,7 +45,8 @@ var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
 app.HealthCheckDBConnection(logger);
-
+//SeedData
+PrepDataExtension.SeedDataPopulation(app, logger);
 
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 app.UseSwagger();
